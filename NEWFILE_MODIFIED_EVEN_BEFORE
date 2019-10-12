@@ -1,0 +1,9 @@
+querycount_mod and middleware
+
+querycount_mod is copied from site_packages after installing django-querycount
+
+Later we modified the middleware to get formatted sql and also tried to add the total time of each query
+
+The original middleware is also stored as middleware_backup
+
+
