@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.http import HttpResponse
 import datetime
 
@@ -21,3 +22,17 @@ logger_database = logging.getLogger("django.db.backends")
 #usage:
 #logger_database.filters[0].open()
 #logger_database.filters[0].close()
+=======
+from basic_django import settings
+from django.http import HttpResponse
+
+def test_8commit(request):
+    subject = 'Thank you for registering to our site'
+    message = ' it  means a world to us '
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [settings.TESTING_EMAIL,]
+    from django.core.mail import send_mail
+    send_mail( subject, message, email_from, recipient_list )
+    html = "<html><body>Email sent</body></html>"
+    return HttpResponse(html)
+>>>>>>> 6b6f965... FOURTH COMMIT: creating new gmail account, use 2 step verification, create app password, DJANO email config, view to send email
