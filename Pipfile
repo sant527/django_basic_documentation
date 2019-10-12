@@ -10,11 +10,14 @@ werkzeug = "*"
 pydotplus = "*"
 django-querycount = "*"
 jupyter = "*"
+flower = "*"
 
 [packages]
 django = "*"
 psycopg2 = "*"
 django-environ = "*"
+celery = "*"
+redis = "*"
 
 [requires]
 python_version = "3.7"

@@ -20,5 +20,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # this view is for testing 8commit related i.e sending email by gmail smtp
-    path('test8commit',views.test_8commit, name='test_8commit')
+    path('test8commit',views.test_8commit, name='test_8commit'),
+    # this view is for testing celery related by sending email
+    path('celery_example_5commit',views.celery_example_5commit, name='celery_example_5commit')
 ]
