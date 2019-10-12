@@ -1,0 +1,7 @@
+settings.py
+
+Remove the secretkey from settings.py before we intialize first git commit after this section. Store the SecretKey for the time being somewhere
+
+[code] Edit: settings.py and change to the following and save
+#gauranga
+SECRET_KEY = 'dummysecretkey'
