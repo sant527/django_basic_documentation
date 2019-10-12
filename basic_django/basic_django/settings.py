@@ -19,13 +19,50 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+#################
+
+#using .env to store important info and keep single settings.py file and change
+#the .env variables as per development and production requirements
+
+#if we use  (e.g env('ALLOWED_HOSTS')) in the settigns.py it has to be mentioned
+#in .env file even we keep the variable empty in the .env else it will show
+#error. Thats why we use environ.Env( ALLOWED_HOSTS=(list, ['127.0.0.1:8000']))
+#to set default value in the settings.py in case its left empty.
+
+#For accessing env variables from .env inside settings.py 
+#step 1
+import environ
+
+#step 2
+# define env as below. Here mention all the defaults we want to have if we leave
+# variables empty in .env file. But this will not check if the variable is
+# defined in .env file or not
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, ['127.0.0.1:8000']),
+)
+
+# step 3
+# reading .env file
+environ.Env.read_env()
+
+#step 4
+#getting the env variable value from the KEY. This will check the .env
+#file for the variable. If its not defined then it will show error. If its empty
+#and its default is defined then it pics the default value else shows empty. 
+#Eg: SECRET_KEY = env('SECRET_KEY')
+
+##################
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dummysecretkey'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -73,12 +110,19 @@ WSGI_APPLICATION = 'basic_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+### DATABASES = {
+###     'default': {
+###         'ENGINE': 'django.db.backends.sqlite3',
+###         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+###     }
+### }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
+    'default': env.db(),  
+    # env.db() is a short form of env.db(‘DATABASE_URL', default='psql:////tmp/my-tmp-sqlite.db')
 }
+
 
 
 # Password validation
