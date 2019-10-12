@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # this view is for testing 8commit related i.e sending email by gmail smtp
+    path('test8commit',views.test_8commit, name='test_8commit')
 ]
