@@ -186,6 +186,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+AUTH_USER_MODEL = 'custom_user.User'
 
 # Configuring smtp with gmail account
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -583,3 +584,17 @@ def pp_traceback(traceback_format_stack):
 ###    #usage:
 ###    #logger_database.filters[0].open()
 ###    #logger_database.filters[0].close()
+
+#######################################################
+# Get ip address
+#######################################################
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
