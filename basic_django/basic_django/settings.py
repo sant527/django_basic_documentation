@@ -203,6 +203,11 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 TESTING_EMAIL=env('TESTING_EMAIL')
 
 
+#By default, Django will only display messages with level greater than 20
+#(INFO). If you want to display DEBUG messages:
+MESSAGE_LEVEL = 10  # DEBUG
+
+
 #######################################################
 # Logging objects, sql, traceback and strings
 #######################################################

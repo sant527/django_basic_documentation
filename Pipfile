@@ -18,6 +18,7 @@ psycopg2 = "*"
 django-environ = "*"
 celery = "*"
 redis = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.7"
