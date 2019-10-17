@@ -1,0 +1,238 @@
+****************************
+First Commit: Fresh virtualenv with pipenv and install django and remove SECRETKEY
+****************************
+
+$ su (login to root)
+Password:
+
+$ pip install pipenv
+
+$ mkdir /home/web_dev/django_basic_documentation
+
+$ cd /home/web_dev/django_basic_documentation
+
+$ export PIPENV_VENV_IN_PROJECT=1
+
+$ pipenv shell
+
+$ tree -R 
+
+$ pipenv install django
+
+$ pipenv graph
+
+$ pipenv shell
+
+$ python -m django --version
+
+$ django-admin --version
+
+$ django-admin startproject basic_django
+
+$ cd ./basic_django
+
+$ python manage.py runserver
+
+$ cd  /home/web_dev/django_basic_documentation
+
+$ touch .gitignore
+
+$ tree -a
+
+$ git config --list --show-origin
+
+$ git init .
+
+$ htmlinput="DjangoDocumentation.html"; mdoutput="DjangoDocumentation.md";  mdfinal="README.md"
+pandoc -f html -t gfm --wrap=preserve -o $mdoutput $htmlinput
+sed -i -r "s/^([0-9]+\.)( +#+ +)/\2\1/g" $mdoutput 
+sed -i -r "s/^ +//g" $mdoutput
+sed -i -r 's/<!-- end list -->//g' $mdoutput
+cp /home/web_dev/github_personl_token_for_gh_md_toc/token.txt .
+split -b 300KB $mdoutput
+rm -rf toc
+mkdir toc
+for f in x*;  
+do 
+cat $f | gh-md-toc - > toc/$f.toc 
+done;
+cat toc/*.toc > toc.md
+sed -i -r 's/<span[^>]*>//g' $mdoutput
+sed -i -r 's/<\/span>//g' $mdoutput
+sed -i -r 's/<p[^>]*>//g' $mdoutput
+sed -i -r 's/<\/p>/<br>/g' $mdoutput
+awk '/<table>/{ORS=""} /<\/table>/{ORS=RS} 1' $mdoutput > tmp && mv tmp $mdoutput
+sed -i '/^$/d;G' $mdoutput
+sed -i -r 's/^./     * &/' $mdoutput
+sed -i -r 's/^     \* (#[^#])/* \1/g' $mdoutput
+sed -i -r 's/^     \* (##[^#])/ * \1/g' $mdoutput
+sed -i -r 's/^     \* (###[^#])/     * \1/g' $mdoutput
+sed -i -r 's/^     \* (####[^#])/       * \1/g' $mdoutput
+sed -Ez -i 's/(\n)(       )(\* ####[^#][^\n]*\n\n)(     )(\* [^#])/\1\2\3\2  \5/g' $mdoutput
+sed -Ez -i 's/(\n)(     )(\* ###[^#][^\n]*\n\n)(     )(\* [^#])/\1\2\3\2  \5/g' $mdoutput
+sed -Ez -i 's/(\n)( )(\* ###[^#][^\n]*\n\n)(     )(\* [^#])/\1\2\3\2    \5/g' $mdoutput
+sed -Ez -i 's/(\n)(\* ###[^#][^\n]*\n\n)(     )(\* [^#])/\1\2\3 \4/g' $mdoutput
+awk 'BEGIN{count=0; prevNR=0; prevChar=""} match($0,/^(( +)(\*)( +))([^#].*)/,a){if(prevNR!=0 && NR == prevNR+2){print prevChar a[5]; prevNR = NR; } else{print; prevChar = a[1]; prevNR = NR} } !/^(( +)(\*)( +))([^#].*)/{ print } /^ +\* +#/{ prevChar = "" } ' $mdoutput > tmp && mv tmp $mdoutput
+cat toc.md $mdoutput > $mdfinal
+
+$ su (login as root)
+
+$ pip install grip
+
+$ grip -b README.md (view the file in firefox localhost:port)
+
+$ git add -A
+
+$ git status
+
+$ git commit -m "First Commit: Fresh virtualenv with pipenv and install django and remove SECRETKEY"
+
+$ ssh-keygen
+
+$ cat ~/.ssh/id_rsa.pub (copy the key to github)
+
+$ ssh -T git@github.com (check ssh connection)
+
+$ git remote add basicdjango git@github.com:sant527/django_basic_documentation.git
+
+$ git remote -v
+
+$ git remote set-url basicdjango git@github.com:sant527/django_basic_documentation.git
+
+$ git push --set-upstream basicdjango master
+
+$ git push -f -u basicdjango master (use -f to force)
+
+to clone git
+
+$ git clone git@github.com:sant527/django_basic_documentation.git .                            
+Directory must be empty
+
+
+****************************
+Second Commit: django-environ and .env and setttings.py and psycopg2 and sensitive information secure - santhosh
+****************************
+
+$ su
+Password: 
+
+$ su - postgres
+
+[postgres@gauranga ~]$ 
+
+(Create database user)
+# psql -v ON_ERROR_STOP=1 -d postgres -c "CREATE USER someusername WITH PASSWORD 'somepass';" 
+
+(Create database with user as owner)
+# psql -v ON_ERROR_STOP=1 -d postgres -c "CREATE DATABASE basicdjangodb OWNER someusername;"
+
+Install the PostgreSQL Django adapter, psycopg2
+$ pipenv install psycopg2
+
+$ pipenv graph (see the packages)
+
+$ pipenv install django-environ 
+
+$ python manage.py shell
+
+>>> from django.core.management.utils import get_random_secret_key 
+>>> get_random_secret_key()
+
+$ touch .env
+
+$ touch .env.example
+
+$ mkdir /home/web_dev/env_basic_django_documentation
+
+$ cp /home/web_dev/basic_django_documentation/basic_django/.env /home/web_dev/env_basic_django_documentation
+
+
+****************************
+THIRD COMMIT: pretty print obj, sql, pygment, sqlparse, django-extensions, ipython, jupyter, runserver_plus, werkzeug, graph_models, django-querycount, pudb debugger, logging - start,stop, custom format, filters, traceback
+****************************
+
+$ pipenv install sqlparse
+
+$ pipenv install pygments 
+
+$ pipenv install django-extensions --dev
+
+$ pipenv install ipython --dev
+
+$ pipenv install jupyter --dev
+
+$ pipenv install werkzeug --dev
+
+$ pipenv install pydotplus --dev
+
+$ pipenv install django-querycount --dev
+
+$ cp  -R /home/web_dev/django_basic_documentation/.venv/lib/python3.7/site-packages/querycount /home/web_dev/django_basic_documentation/basic_django
+
+$ cp /home/web_dev/django_basic_documentation/basic_django/querycount/middleware.py /home/web_dev/django_basic_documentation/basic_django/querycount/middleware_backup.py
+
+$ pipenv install pudb --dev
+
+$ touch ./django_basic_documentation/basic_django/basic_django/views.py
+
+
+****************************
+FOURTH COMMIT: creating new gmail account, use 2 step verification, create app password, DJANO email config, view to send email
+****************************
+
+No commands
+
+****************************
+FIFTH COMMIT: Celery and redis
+****************************
+
+$ pacman -S redis
+
+$ redis-server
+
+$ pipenv install celery redis
+
+$ touch /home/web_dev/django_basic_documentation/basic_django/basic_django/celery.py
+
+$  celery -A basic_django worker --loglevel=debug
+
+$ pipenv install flower --dev
+
+$ celery -A proj flower --port=5555
+
+
+*****************************
+Sixth Commit: creating an app for custom_user using manage.py startapp
+*****************************
+
+python manage.py startapp  custom_user
+
+
+*****************************
+Seventh Commit: Theory behind custom_user, AUTH_USER_MODEL, AbstractUser
+*****************************
+
+
+*****************************
+Eight Commit: FLowchart for User Auth - Session based
+*****************************
+
+
+
+*****************************
+Ninth Commit:  Added custom model and manager and AUTH_USER_MODEL to settings and migrate
+*****************************
+python manage.py makemigrations
+
+python manage.py migrate
+
+
+*****************************
+Tenth Commit: Creating Super User
+*****************************
+
+python manage.py createsuperuser
+
+python manage.py changepassword <user_name>
+
+
