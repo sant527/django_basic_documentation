@@ -16,11 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # this view is for testing 8commit related i.e sending email by gmail smtp
     path('test8commit',views.test_8commit, name='test_8commit'),
     # this view is for testing celery related by sending email
-    path('celery_example_5commit',views.celery_example_5commit, name='celery_example_5commit')
+    path('celery_example_5commit',views.celery_example_5commit, name='celery_example_5commit'),
+    # include all the urls from articles app
+    path('', include('articles.urls',namespace='articles_namespace')),
+    # include all the urls from login_register_password
+    path('login_register_password/', include('login_register_password.urls',namespace='login_register_password_namespace')),
 ]
