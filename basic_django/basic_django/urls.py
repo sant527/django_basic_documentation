@@ -20,6 +20,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # this view is for testing 7commit related i.e sql logging, pretty printing, traceback 
+    path('test7commit',views.test_7commit, name='test_7commit'),
     # this view is for testing 8commit related i.e sending email by gmail smtp
     path('test8commit',views.test_8commit, name='test_8commit'),
     # this view is for testing celery related by sending email
