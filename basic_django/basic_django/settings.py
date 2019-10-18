@@ -74,7 +74,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'custom_user'
+    'custom_user',
+    'login_register_password',
+    'articles'
 ]
 
 if DEBUG: 
