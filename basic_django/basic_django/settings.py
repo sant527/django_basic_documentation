@@ -84,6 +84,7 @@ if DEBUG:
 
 
 MIDDLEWARE = [
+    'basic_django.middleware.request_exposer.RequestExposerMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -215,6 +216,8 @@ MESSAGE_LEVEL = 10  # DEBUG
 import logging
 import traceback
 
+exposed_request=None
+
 # Verbose formatter to be used for the handler used in logging "custom_string"
 class VerFormatter(logging.Formatter):
     def format(self, record):
@@ -248,10 +251,14 @@ class VerFormatter(logging.Formatter):
             code,
             Python3Lexer(),
             #TerminalTrueColorFormatter(style='monokai')
-            TerminalTrueColorFormatter()
+            TerminalTrueColorFormatter(style='monokai')
         )
 
         #add new attributes to record which will be used later
+        # we also want to have the url requested and its method
+        if exposed_request is not None:
+            record.absolute_path = exposed_request.build_absolute_uri()
+            record.method = exposed_request.method
         record.codelines = code
         record.topline = "--------------------------------------------------------------------------------------------------------------"
         record.botline = "--------------------------------------------------------------------------------------------------------------"
@@ -289,7 +296,7 @@ class SQLFormatter(logging.Formatter):
                 sql,
                 SqlLexer(),
                 #TerminalTrueColorFormatter(style='monokai')
-                TerminalTrueColorFormatter()
+                TerminalTrueColorFormatter(style='monokai')
             )
 
         # Set the record's statement to the formatted query
@@ -333,8 +340,13 @@ class LoggerGate:
             print('\n')
             print('##############################################################################################################')
             print('SQL QUERIED')
+            if exposed_request is not None:
+                print("PATH: "+exposed_request.build_absolute_uri())
+                print("METHOD: "+exposed_request.method)
+               #print(pp_odir(exposed_request,traceback.format_stack(limit=4)))
             print('##############################################################################################################')
             print('\n')
+           
             print(pp_traceback(traceback.format_stack(limit=20)))
             print('\n')     
         return self.state == 'open'
@@ -349,7 +361,7 @@ LOGGING = {
         },
         'verbose': {
             '()': VerFormatter,
-            'format': '%(topline)s\n%(asctime)s\nXXX%(levelname)sXXX %(funcName)s() %(pathname)s[:%(lineno)s] %(name)s \n%(topline)s\n\n%(message)s\n\n%(codelines)s',
+            'format': '%(topline)s\n%(asctime)s\nXXX%(levelname)sXXX %(funcName)s() %(pathname)s[:%(lineno)s] %(name)s \n%(absolute_path)s\n%(method)s\n%(topline)s\n\n%(codelines)s\n\n%(message)s\n\n%(codelines)s',
             #'datefmt': "[%d/%b/%Y %H:%M:%S %p %Z]"
         },
         'django.server': {
@@ -401,7 +413,6 @@ LOGGING = {
             'handlers': ['django.server'],
             'propagate': False,
         }
-
     }
 }
 
@@ -542,7 +553,7 @@ def pp_odir(obj,trace):
     except:
         pass
 
-    highlight_obj = highlight(json_str, JsonLexer(), TerminalTrueColorFormatter())
+    highlight_obj = highlight(json_str, JsonLexer(), TerminalTrueColorFormatter(style='monokai'))
     trace_hightligh = pp_traceback(trace)
     str3 = '\n\n'.join([highlight_obj, trace_hightligh])
     return str3
@@ -556,7 +567,7 @@ def pp_sql_sql(sql):
     # format using sqlparser
     sql = sqlparse.format(sql, reindent=True)
     # color it using pygments
-    sql = pygments.highlight(sql,SqlLexer(),TerminalTrueColorFormatter())
+    sql = pygments.highlight(sql,SqlLexer(),TerminalTrueColorFormatter(style='monokai'))
     return sql
 
 # pretty print sql query from queryset using mogrify(available only for Psycopg)
@@ -581,7 +592,7 @@ def pp_sql_query_pg(qs):
     # format using sqlparser
     sql = sqlparse.format(sql, reindent=True)
     # color it using pygments
-    sql = pygments.highlight(sql,SqlLexer(),TerminalTrueColorFormatter())
+    sql = pygments.highlight(sql,SqlLexer(),TerminalTrueColorFormatter(style='monokai'))
     return sql
 
 #pretty print sql query from queryset if Psycopg is not installed (or using database other then postgresql)
@@ -611,7 +622,7 @@ def pp_sql_query_any(qs):
     # format using sqlparser
     sql = sqlparse.format(sql, reindent=True)
     # color it using pygments
-    sql = pygments.highlight(sql,SqlLexer(),TerminalTrueColorFormatter())
+    sql = pygments.highlight(sql,SqlLexer(),TerminalTrueColorFormatter(style='monokai'))
     return sql
 
 

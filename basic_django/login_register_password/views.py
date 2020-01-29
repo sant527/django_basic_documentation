@@ -171,7 +171,7 @@ def user_login_via_otp_form_otp(request):
             timecheck = current_time - creation_time < timelimit
             timedelta = current_time - creation_time
             import traceback
-            logger_custom_string.debug(settings.pp_odir(locals(),traceback.format_stack(limit=5)))
+            logger_custom_string.debug(settings.pp_odir(locals(),traceback.format_stack()))
 
             if current_time - creation_time > timelimit:
                 form.add_error(None,"OTP expired, Click on resend OTP")
