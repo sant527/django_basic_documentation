@@ -201,7 +201,7 @@ class QueryCountMiddleware(MiddlewareMixin):
                 sql,
                 SqlLexer(),
                 #TerminalTrueColorFormatter(style='monokai')
-                TerminalTrueColorFormatter()
+                TerminalTrueColorFormatter(style='monokai')
             )
 
         return sql
